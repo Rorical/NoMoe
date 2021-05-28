@@ -3,6 +3,7 @@
 import { app, protocol, BrowserWindow } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 
+import IpfsClient from 'ipfs-http-client'
 import Aviondb from 'aviondb'
 
 const isDevelopment = process.env.NODE_ENV !== "production";
@@ -75,3 +76,9 @@ if (isDevelopment) {
     });
   }
 }
+
+Aviondb.init('NoMoeDB', ipfs, {
+  path: __dirname
+}).then(db => {
+  global.aviondb = aviondb
+})
