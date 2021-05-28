@@ -1,4 +1,5 @@
-# nomoe
+# NoMoe
+ Who like kawaii things??!
 
 ## Project setup
 ```
