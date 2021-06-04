@@ -1,0 +1,15 @@
+{
+    "user.identity.query.error": "找不到您的账户私钥了喵!",
+    "app": {
+        "welcome": {
+            "1": {
+                "title": "你好鸭!",
+                "description": "很高兴认识你！"
+            },
+            "2": {
+                "title": "创建账户",
+                "description": "请选择一种创建你的账户的方法"
+            }
+        }
+    }
+}

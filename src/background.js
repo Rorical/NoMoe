@@ -2,9 +2,7 @@
 
 import { app, protocol, BrowserWindow } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
-
-import IpfsClient from 'ipfs-http-client'
-import Aviondb from 'aviondb'
+import { registerEvents } from '@/app/events'
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -13,16 +11,20 @@ protocol.registerSchemesAsPrivileged([
   { scheme: "app", privileges: { secure: true, standard: true } },
 ]);
 
+let win
+
 async function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+   win = new BrowserWindow({
+    width: 1400,
+    height: 900,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
+      preload: `${__dirname}/preload.js`,
+      enableRemoteModule: true
     },
   });
 
@@ -56,10 +58,8 @@ app.on("activate", () => {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", async () => {
-  if (isDevelopment && !process.env.IS_TEST) {
-    // Install Vue Devtools
-  }
   createWindow();
+  registerEvents(win)
 });
 
 // Exit cleanly on request from parent process in development mode.
@@ -76,9 +76,3 @@ if (isDevelopment) {
     });
   }
 }
-
-Aviondb.init('NoMoeDB', ipfs, {
-  path: __dirname
-}).then(db => {
-  global.aviondb = aviondb
-})

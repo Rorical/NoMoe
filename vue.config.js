@@ -1,8 +1,19 @@
+const path = require('path')
+
 module.exports = {
+    productionSourceMap: false,
+    configureWebpack: () => ({
+        resolve: {
+            alias: {
+                '@': path.resolve(__dirname, './src'),
+            },
+        },
+    }),
     pluginOptions: {
         electronBuilder: {
-            nodeIntegration: true,
-            externals: ['aviondb'],
+            nodeIntegration: false,
+            preload: "src/preload.js",
+            externals: ['orbit-db', 'orbit-db-identity-provider'],
             experimentalNativeDepCheck: true,
             builderOptions: {
                 "appId": "net.no.moe",
