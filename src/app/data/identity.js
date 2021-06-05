@@ -13,6 +13,11 @@ global.crypto = {
 }
 const { ethers } = require("ethers")
 
+const generateWalletRandomly = async () => {
+    let wallet = ethers.Wallet.createRandom()
+    return wallet
+}
+
 const retriveWalletFromPrivKey = async (key) => {
     let wallet = new ethers.Wallet(key)
     return wallet
@@ -43,5 +48,6 @@ export {
     retriveWalletFromPrivKey,
     retriveWalletFromMnemo,
     getIdentityFromWallet,
-    retriveWalletFromJson
+    retriveWalletFromJson,
+    generateWalletRandomly
 }

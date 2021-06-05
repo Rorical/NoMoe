@@ -3,6 +3,7 @@ import App from "@/App.vue";
 
 import Buefy from "buefy";
 import "buefy/dist/buefy.css";
+import '@/assets/scss/index.scss'
 
 import router from "@/router";
 import i18n from "@/locales/i18n"

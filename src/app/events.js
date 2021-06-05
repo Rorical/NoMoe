@@ -36,8 +36,9 @@ const events = {
     'initializeIdentity': async (_, password) => {
         let walletJson = config.get('user.identity.walletJson', null)
         if(walletJson){
+            let wallet
             try {
-                let wallet = await identityUtil.retriveWalletFromJson(walletJson, password)
+                wallet = await identityUtil.retriveWalletFromJson(walletJson, password)
             } catch {
                 win.webContents.send('resultInitialize', {
                     type: 'error',
@@ -71,24 +72,76 @@ const events = {
             })
         }
     },
-    'queryUserIdentity': async (_) => {
-        let wallet = await identityUtil.retriveWalletFromJson()
-        wallet.encrypt("rorical").then((data) => {
-            console.log(data)
-        })
-        let identity = await identityUtil.getIdentityFromWallet(wallet)
-        console.log(wallet.privateKey)
-        win.webContents.send('resultUserIdentity', {
+    'createUserIdentityByRandom': async (_) => {
+        let wallet = await identityUtil.generateWalletRandomly()
+        win.webContents.send('resultCreateUserIdentityByRandom', {
             type: 'success',
             data: {
-                id: identity.id,
-                publicKey: identity.publicKey,
-                signatures: {
-                    id: identity.signatures.id,
-                    publicKey: identity.signatures.publicKey
-                },
+                mnemonic: wallet.mnemonic,
+                privKey: wallet.privateKey
             }
         })
+    },
+    'saveUserIdentity': async (_, data) => {
+        try{
+            if(data["type"] == "privateKey"){
+                let wallet = await identityUtil.retriveWalletFromPrivKey(data["data"]["privateKey"])
+                let json = wallet.encrypt(data["data"]["password"])
+                config.set("user.identity.walletJson", json)
+            }else if(data["type"] == "mnemonic"){
+                let wallet = await identityUtil.retriveWalletFromMnemo(data["data"]["mnemonic"])
+                let json = wallet.encrypt(data["data"]["password"])
+                config.set("user.identity.walletJson", json)
+            }
+            win.webContents.send('resultSaveUserIdentity', {
+                type: 'success'
+            })
+        }catch(e){
+            let err = e.message
+            if(err.includes("invalid mnemonic")){
+                err = "app.welcome.error.invalid.mnemonic"
+            }else if(err.includes("invalid hexlify value")){
+                err = "app.welcome.error.invalid.privKey"
+            }
+            win.webContents.send('resultSaveUserIdentity', {
+                type: 'error',
+                error: err
+            })
+            return 
+        }
+    },
+    'getPrivKeyFromJson': async (_, data) => {
+        let walletJson = data["data"]["json"]
+        let password = data["data"]["password"]
+        try{
+            let wallet = await identityUtil.retriveWalletFromJson(walletJson, password)
+            win.webContents.send('resultGetPrivKeyFromJson', {
+                type: 'success',
+                data: {
+                    privKey: wallet.privateKey
+                }
+            })
+        } catch(e) {
+            let err = e.message
+            if(err.includes("invalid JSON wallet")){
+                err = "app.welcome.error.invalid.json"
+            }else if(err.includes("invalid arrayify value")){
+                err = "app.welcome.error.invalid.json"
+            }else if(err.includes("invalid password")){
+                err = "app.welcome.error.invalid.password"
+            }
+            win.webContents.send('resultGetPrivKeyFromJson', {
+                type: 'error',
+                error: err
+            })
+            return
+        }
+    },
+    'setIPFSUrl': async (_, data) => {
+        config.set("ipfs.api", data)
+    },
+    'setInitialzed': async (_, data) => {
+        config.set("app.init", data)
     }
 }
 

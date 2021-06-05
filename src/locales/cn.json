@@ -1,14 +1,58 @@
 {
-    "user.identity.query.error": "找不到您的账户私钥了喵!",
     "app": {
+        "general": {
+            "continue": "继续",
+            "back": "退回"
+        },
         "welcome": {
-            "1": {
-                "title": "你好鸭!",
-                "description": "很高兴认识你！"
+            "success":{
+                "setipfs": "设置ipfs地址成功！"
             },
-            "2": {
+            "error": {
+                "empty":{
+                    "keyinfo": "没有写东西啦！",
+                    "password": "还请填写密码哦"
+                },
+                "invalid": {
+                    "mnemonic": "助记词写错啦！再检查一下吧",
+                    "privKey": "私钥输错了吧！再检查下吧",
+                    "json": "json输入错啦！",
+                    "password":"密码错误！",
+                    "url": "不是一个正确的链接！"
+                }
+            },
+            "step1": {
+                "title": "你好鸭!",
+                "description": "很高兴认识你！",
+                "content":{
+                    "introduction": "NoMoe是一个分布式的插画分享平台。在这里允许插画师和追随者进行直接的沟通，并发挥自由创作的权力！"
+                }
+            },
+            "step2": {
                 "title": "创建账户",
-                "description": "请选择一种创建你的账户的方法"
+                "description": "通过身份你可以与网络交互",
+                "content": {
+                    "item1": {
+                        "title": "新建一个身份",
+                        "subtitle": "让我帮你生成一份私钥！一定要保存好哦！"
+                    },
+                    "item2": {
+                        "title": "从助记词恢复身份",
+                        "subtitle": "从已有的以太坊钱包导出的助记词来导入账户"
+                    },
+                    "item3": {
+                        "title": "从加密的钱包JSON恢复身份",
+                        "subtitle": "上传一个JSON，但是要输入密码"
+                    },
+                    "item4": {
+                        "title": "从私钥恢复身份",
+                        "subtitle": "直接输入私钥来恢复"
+                    }
+                }
+            },
+            "step3": {
+                "title": "最后一点设置..",
+                "description": "请允许我连接IPFS和用户数据库"
             }
         }
     }

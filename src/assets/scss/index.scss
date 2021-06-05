@@ -1,0 +1,16 @@
+@mixin hoverer {
+    transition: transform .1s ease-in-out, box-shadow .1s ease-in-out;
+    user-select: none;
+    &:hover {
+        transform: translate(-1px, -0.35rem) scale(1.01);
+        box-shadow: 4px 5px 1px 0.5px rgba(0, 0, 10, .1);
+    }
+    &:active {
+        transform: translate(-0.5px, -0.175rem) scale(1.005);
+        box-shadow: 2px 2.5px 0.5px 0.25px rgba(0, 0, 10, .05);
+    }
+}
+
+.lift-hover {
+    @include hoverer;
+}
