@@ -86,11 +86,11 @@ const events = {
         try{
             if(data["type"] == "privateKey"){
                 let wallet = await identityUtil.retriveWalletFromPrivKey(data["data"]["privateKey"])
-                let json = wallet.encrypt(data["data"]["password"])
+                let json = await wallet.encrypt(data["data"]["password"])
                 config.set("user.identity.walletJson", json)
             }else if(data["type"] == "mnemonic"){
                 let wallet = await identityUtil.retriveWalletFromMnemo(data["data"]["mnemonic"])
-                let json = wallet.encrypt(data["data"]["password"])
+                let json = await wallet.encrypt(data["data"]["password"])
                 config.set("user.identity.walletJson", json)
             }
             win.webContents.send('resultSaveUserIdentity', {
